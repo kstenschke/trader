@@ -5,10 +5,16 @@ Trader
 
 This was a playground project to experiment w/ stocks.
 
+
+### Further development / contributions
+
 For the lack of time i'll probably NOT continue working on this.
 Before archiving the project in the hope that someone might find it useful, 
 i changed the used API (from the now shut-down Yahoo finance API) to IEX Cloud and added a facade, 
 so different APIs should be easily connectable.
+
+*Please note:* This project is archived (read-only) now, so no pull-requests will be possible.
+Please feel free to fork and play with the project on your own new branch.
 
 
 ## Installation
