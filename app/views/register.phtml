@@ -1,0 +1,38 @@
+<?php
+
+/** @noinspection UntrustedInclusionInspection */
+/** @noinspection PhpIncludeInspection */
+require_once 'app/bootstrap.php'; ?>
+<!DOCTYPE html>
+<html>
+    <?php
+        $title = 'Register';
+        include PATH_APP . '/views/partials/head.phtml'; ?>
+    <body id="login">
+        <div id="loginBox">
+            <form action="register2.phtml" method="post">
+                <h1>Register</h1>
+                <fieldset class="accountInfo">
+                    <label for="displayname">Display Name</label>
+                    <input type="text" id="displayname" name="displayname" required>
+
+                    <label for="username">Username&nbsp;(min.&nbsp;4&nbsp;characters)</label>
+                    <input type="text" id="username" name="username" required>
+
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+
+                    <label for="confirmpassword">Confirm Password</label>
+                    <input type="password" name="confirmpassword" id="confirmpassword" required>
+                </fieldset>
+
+                <fieldset class="accountAction">
+                    <input class="btn" type="submit" name="submit" value="Register">
+                </fieldset>
+                <br/>
+                <span class="u-floatRight">Already have an account? <a href="login.phtml">Login</a></span>
+            </form>
+        </div>
+        <?php echo models\JavaScript::getScriptTag(); ?>
+    </body>
+</html>

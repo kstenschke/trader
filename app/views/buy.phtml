@@ -1,0 +1,95 @@
+<?php
+
+/** @noinspection UntrustedInclusionInspection */
+/** @noinspection PhpIncludeInspection */
+require_once 'app/bootstrap.php';
+models\Auth::restrictAccess();
+
+$symbol = $_GET[ 'symbol' ] ?? ''; ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+    <?php
+        $title = 'Buy Stock';
+        include PATH_APP . '/views/partials/head.phtml';
+    ?>
+    <body class="<?php echo models\CssTheme::getActiveThemeName(true) ?>Theme">
+        <?php
+            echo models\JavaScript::getScriptTag();
+            $subNav = [];
+            require_once PATH_APP . '/views/partials/navbar.phtml';
+        ?>
+        <div class="pageWrap">
+            <div id="main">
+                <form action="ajax-symbol-buy.php" method="get" id="mainForm" class="mainForm">
+                    <fieldset class="accountInfo"">
+                        <div style="float:left; padding-right:10px">
+                            <label for="symbol"><?php echo I::StockSymbol ?>:</label>
+                            <br/><br/>
+                            <input
+                                    style="width:115px"
+                                    type="text"
+                                    id="symbol"
+                                    name="symbol"
+                                    value="<?php echo $symbol ?>"
+                            />
+                            <img
+                                    style="left:-302px"
+                                    class="icon clearInput"
+                                    onclick="$('#symbol').val(''); $('#popup').remove()"
+                                    src="var/assets/images/times-circle.png"
+                            />
+                            <input class="btn getQuote"
+                                   style="float:left; margin:4px 10px -20px 10px; width:inherit"
+                                   type="submit"
+                                   onclick="Trader.Symbol.requestQuote(); return false"
+                                   name=""
+                                   value="<?php echo I::GetQuote ?>"
+                            />
+                            <input
+                                    class="btn blue watch"
+                                    type="submit"
+                                    style="float:left; margin:4px 30px -20px 0; height:30px; width:inherit"
+                                    name=""
+                                    onclick="this.form.action='ajax-symbol-watch.php'"
+                                    value="<?php echo I::Watch ?>"
+                            />
+                        </div>
+                        <div style="float:left; padding-right:10px">
+                            <label for="qty"><?php echo I::Quantity ?>:</label>
+                            <br/><br/>
+                            <input
+                                    style="width:115px"
+                                    type="number"
+                                    min="1"
+                                    max="9999"
+                                    id="qty"
+                                    name="qty"
+                                    value="1"
+                            />
+                        </div>
+                        <input
+                                class="btn green"
+                                style="width:60px; float:left; margin:33px 12px 0 0; height:30px"
+                                type="submit"
+                                name=""
+                                value="<?php echo I::Buy ?>"
+                        />
+                        <input
+                                class="btn grey cancel u-floatRight"
+                                style="width:inherit; margin:33px 12px 0 0"
+                                type="button"
+                                value="<?php echo I::Cancel ?>"
+                                onclick="history.go(-1)"
+                        />
+                    </fieldset>
+                    <?php include PATH_APP . '/views/partials/symbol_search.phtml'; ?>
+                </form>
+            </div>
+        </div>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                Trader.Symbol.requestSymbolSearch();
+            });
+        </script>
+    </body>
+</html>

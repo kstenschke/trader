@@ -1,0 +1,215 @@
+/**
+ * @see Naming convention: https://github.com/suitcss/suit/blob/master/doc/README.md (SUIT CSS principles)
+ * @see SASS reference:    http://sass-lang.com/documentation/file.SASS_REFERENCE.html#css_extensions
+ */
+
+html, body {
+  background-color: #fffffe;
+  color: #000001;
+  font-family: sans-serif;
+  font-size: 14px;
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  padding-bottom: 20px;
+
+  &#login {
+    background-color: #49718f;
+
+    & .accountAction {
+      background-color: #f3f3f3;
+      border-top: 0;
+    }
+  }
+}
+
+li {
+  display: inline;
+}
+
+.accountAction {
+  background: #f0f0f2;
+  border-top: 1px solid #cecfd5;
+  padding: 10px;
+
+  &.transparent {
+    background: transparent;
+  }
+}
+
+.accountInfo {
+  padding: 10px;
+}
+
+.apology {
+  color: #395870;
+  margin: auto;
+  padding: 1em;
+  position: relative;
+  text-align: center;
+  top: 1em;
+
+  span {
+    color: #395870;
+    margin: auto;
+    padding: 1em;
+    position: relative;
+    text-align: center;
+  }
+}
+
+.accountSettings {
+  background-color: #fffffc;
+  margin: 100px auto 0 auto;
+  position: relative;
+  width: 80%;
+
+  &.transparent {
+    background: transparent;
+  }
+}
+
+.info-appended {
+  color: #395870;
+  float: right;
+  margin: -16px 0 0 20px;
+}
+
+.half-wid {
+  float: left;
+  width: 50%;
+}
+
+.third-wid {
+  float: left;
+  width: 33%;
+
+  input {
+    width: 80%;
+  }
+}
+
+.threeQuarter-wid,
+input.threeQuarter-wid {
+  width: 75%;
+  float: left;
+}
+
+.index {
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 3em;
+  width: 100%;
+
+  div {
+    color: #395870;
+    display: block;
+    line-height: 28px;
+    text-align: center;
+    text-transform: capitalize;
+    width: 100%;
+  }
+}
+
+.loginHeading {
+  background-color: #49708f;
+  color: #395870;
+  font-size: 30px;
+  margin: 20px auto 0;
+  padding: 0;
+  position: relative;
+  text-align: center;
+  text-transform: uppercase;
+  -moz-background-clip: text;
+  -moz-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+#main {
+  margin: 100px auto 0 auto;
+  position: relative;
+  width: 80%;
+}
+
+#middle {
+  background-color: #ffffff;
+  left: 40%;
+  position: fixed;
+  top: 20%;
+}
+
+#popup {
+  background-color: #fdfdfd;
+  border: 1px solid #cecfd5;
+  box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
+  line-height: 18px;
+  margin: 10px 0;
+  width: 100%;
+  -moz-box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
+
+  .portfolio &,
+  .quotes & {
+    margin: 10px 10% 10px 10%;
+    max-width: 1149px;
+  }
+}
+
+#siteHeader {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 1280px;
+  min-width: 1024px;
+  position: relative;
+
+  &Container {
+    background-color: #efefed;
+    height: 55px;
+    left: 0;
+    padding: 10px 17px 10px 17px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 99;
+  }
+}
+
+.pageWrap {
+  margin-bottom: -23px;
+  min-height: 100%;
+
+  &:after {
+    content: "";
+    display: block;
+    height: 23px;
+  }
+}
+
+.symbolName {
+  color: #395870;
+  display: block;
+}
+
+.quote {
+  color: #49708f;
+  margin-left: 35em;
+  margin-top: -2em;
+  position: absolute;
+}
+
+.quoteHeading {
+  padding: 1em;
+  text-align: left;
+}
+
+.green {
+  color: #009400;
+}
+
+.red {
+  color: #ff0000;
+}

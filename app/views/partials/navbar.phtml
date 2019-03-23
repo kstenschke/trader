@@ -1,0 +1,22 @@
+<div id="siteHeaderContainer">
+    <div id="siteHeader">
+        <div id="navbar" class="<?php echo models\CssTheme::getActiveThemeName(true) ?>Theme">
+            <ul>
+                <?php
+                    $activePageName = models\Area::getActivePageName();
+                    foreach (models\Config::getConfig('pages') as $page) { ?>
+                        <li<?php echo $activePageName === $page['title'] ? ' class="active"' : '' ?>>
+                            <a href="<?php echo $page['title'] ?>.php">
+                                <?php echo ($page[ 'icon' ] === ''
+                                    ? ''
+                                    : '<div class="icon ' . $page['icon'] . '"></div>') ?>
+                                <span><?php echo I(ucfirst($page[ 'title' ])) ?></span>
+                            </a>
+                        </li>
+                <?php } ?>
+                <?php require_once PATH_APP . '/views/partials/navbar-right.phtml'; ?>
+            </ul>
+            <?php require_once PATH_APP . '/views/partials/navbar-sub.phtml'; ?>
+        </div>
+    </div>
+</div>

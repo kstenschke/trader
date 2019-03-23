@@ -1,0 +1,11 @@
+<fieldset class="accountInfo readOnly">
+    <?php $presets = models\Config::getConfig('tradeRates') ?>
+    <label for="courtage_percent"><?php echo I::CourtageInPercent ?></label>
+    <input type="number" disabled="disabled" name="courtage_percent" value="<?php echo $presets['courtageInPercent'] ?>">
+
+    <label for="courtage_each"><?php echo I::CourtagePerTrade ?></label>
+    <input type="number" disabled="disabled" name="courtage_each" value="<?php echo $presets['courtagePerTrade'] ?>">
+
+    <label for="courtage_each"><?php echo I::DayTradingTaxRateInPercent ?></label>
+    <input type="number" disabled="disabled" name="day_trade_tax" value="<?php echo $presets['dayTradingTaxInPercent'] ?>">
+</fieldset>

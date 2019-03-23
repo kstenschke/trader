@@ -1,0 +1,80 @@
+<?php
+
+/** @noinspection UntrustedInclusionInspection */
+/** @noinspection PhpIncludeInspection */
+require_once 'app/bootstrap.php';
+models\Auth::restrictAccess();
+
+$result               = models\db\Portfolio::selectRows();
+$symbolToSell         = $_GET[ 'symbol' ] ?? '';
+$amountOwnedPerSymbol = models\db\Portfolio::getAmountOwnedPerSymbol(null, true);
+
+$amountSharesTotal = 0;
+foreach ($amountOwnedPerSymbol as $symbol) {
+    $amountSharesTotal += (int)$symbol['amount'];
+}
+?><!DOCTYPE html>
+<html>
+    <?php
+        $title = 'Sell Stock';
+        include PATH_APP . '/views/partials/head.phtml'; ?>
+    <body class="sell <?php echo models\CssTheme::getActiveThemeName(true) ?>">
+        <?php require_once PATH_APP . '/views/partials/navbar.phtml'; ?>
+        <div class="pageWrap">
+            <div id="main">
+                <form action="sell2.phtml" method="get" id="mainForm" class="mainForm">
+                    <fieldset class="accountInfo">
+                        <label><?php echo I::StocksYouOwn ?>: (<?php echo count($amountOwnedPerSymbol) . ' ' . I::Symbols ?> / <?php echo $amountSharesTotal . ' ' . I::Shares ?>)</label>
+                        <select id="symbol" name="symbol" size="20" multiple="false">
+                            <?php
+                                include PATH_APP . '/views/partials/sell-options.phtml';
+                                /** @var int $amountAllInitial */ ?>
+                        </select>
+                        <label><?php echo I::QuantityToSell ?>:</label>
+                        <?php if ($result) { ?>
+                            <input type="number" min="1" max="9999" id="qty" name="qty" value="1"/>
+                        <?php } else { ?>
+                            <input type="number" min="0" max="0" id="qty" name="qty" value="0" disabled="disabled"/>
+                        <?php } ?>
+                    </fieldset>
+                    <fieldset class="accountAction">
+                        <input class="btn grey cancel" type="button" value="<?php echo I::Cancel ?>" onclick="history.go(-1)"/>
+                        <?php if ($result) { ?>
+                            <input class="btn red"
+                                   data-amount="<?php echo $amountAllInitial ?>"
+                                   id="sell-all"
+                                   name=""
+                                   type="button"
+                                   value="<?php echo I::SellAll ?> (<?php echo $amountAllInitial ?>)">
+                            <input class="btn red"
+                                   id"sell"
+                                   name=""
+                                   type="submit"
+                                   value="<?php echo I::Sell ?>">
+                        <?php } ?>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+        <?php echo models\JavaScript::getScriptTag(); ?>
+        <script type="text/javascript">
+            $(function(){
+                var $sellAll = $('#sell-all');
+
+                $sellAll.click(function(){
+                    $('#qty').val($sellAll.data('amount'));
+                    $('#mainForm').submit();
+                });
+
+                $('#symbol').change(function() {
+                    var $selected   = $(this).find('option:selected'),
+                        amountOwned = $selected.data('amount');
+                    $sellAll
+                        .val('<?php echo I::SellAll ?> (' + amountOwned + ')')
+                        .data('amount', amountOwned);
+                });
+            });
+            $('#qty').focus();
+        </script>
+    </body>
+</html>

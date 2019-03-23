@@ -1,0 +1,21 @@
+<li<?php if (models\Area::getActivePageName() === 'account') { ?> class="active"<?php } ?>>
+    <a href="account.php" title="<?php echo I::AccountSettings ?>">
+        <div class="icon icon-cog three-quarter"></div>
+        <?php echo $_SESSION['displayname'];?>
+        <?php
+        $admins = models\Config::getConfig('acl')['adminUsernames'];
+        if (in_array($_SESSION['displayname'], $admins, true)) { ?>
+            (<?php echo I::Administrator ?>)
+        <?php } ?>
+        &nbsp;$<?php echo models\db\User::getCash(); ?>
+    </a>
+</li>
+<li>
+    <a style="z-index: 30;" lass="u-floatRight" href="logout.php">
+        <div class="icon icon-power-off three-quarter"></div>
+        <?php echo I::Logout ?>
+    </a>
+</li>
+<li>
+    <?php require PATH_APP . '/views/partials/clock.phtml'; ?>
+</li>

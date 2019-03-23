@@ -1,0 +1,59 @@
+<div id="jsGrid"></div>
+<script>
+    var symbols = [<?php
+    $totalValue  = 0.00;
+    $totalShares = 0;
+    $totalPaid   = 0.00;
+
+    if ((bool)$result) {
+        while ($row = mysqli_fetch_array($result)) {
+            $shownSymbolIDs []= $row['id_symbol'];
+
+            $totalShares += $row['number_of_share'];
+            $subtotal     = (float)$row['number_of_share'] * $row['price_latest'];
+            $totalValue  += $subtotal;
+
+            $totalPaid += (float)$row['number_of_share'] * $row['price'];
+
+            $priceChange   = $row['price_latest'] - $row['price'];
+            /* ex: 25 is what percentage of 80?
+             Step 1: Solve the equation: 80 / 25 = x
+             Step 2: Multiply x by 100% to get the answer
+             */
+            $changePercent = 100.0 * ($priceChange / $row['price']);
+            $prefix        = $priceChange > 0 ? '+' : '';
+?> { "Diff": "<?php echo $changePercent ?>",
+      "Symbol": "<?php echo $row['symbol'] ?>",
+      "Name": "<?php echo $row['security_name'] ?>",
+      "Shares": "<?php echo $row['number_of_share'] ?>",
+      "Purchased": "<?php
+          if ($row['number_of_share'] > 0) {
+              echo str_replace(' ', '&nbsp;', date('Y/m/d H:i', $row['time'])) . '<br/>' . helpers\Dates::formatDateDiff($row['time'], null, true);
+          } else { echo '-'; } ?>",
+      "Price": "<?php echo number_format($row['price_latest'], 2) ?>",
+      "Paid": "<?php echo
+          ($row['number_of_share'] > 1 ? number_format($row['price'], 2) . '<br/>' : '')
+          . round((float)$row['number_of_share'] * $row['price'], 2) ?>",
+      "Total": "<?php number_format($subtotal, 2) ?>"
+    }, <?php
+        }
+    } ?>];
+    $('#jsGrid').jsGrid({
+        width: '1152px',
+        inserting: false,
+        editing: false,
+        sorting: true,
+        paging: true,
+        data: symbols,
+        fields: [
+            { name: 'Diff', type: 'text', width: 100, validate: 'required' },
+            { name: 'Symbol', type: 'text', width: 80 },
+            { name: 'Name', type: 'text', width: 320 },
+            { name: 'Shares', type: 'text', width: 80},
+            { name: 'Purchased', type: 'text', width: 140},
+            { name: 'Price', type: 'text', width: 80},
+            { name: 'Paid', type: 'text', width: 80 },
+            { name: 'Total', type: 'text', width: 80  }
+        ]
+    });
+</script>

@@ -1,0 +1,33 @@
+<?php
+
+/** @noinspection UntrustedInclusionInspection */
+/** @noinspection PhpIncludeInspection */
+require_once 'app/bootstrap.php';
+
+if (!isset($_POST['username'])) {
+    header('login.phtml');
+}
+
+// Grabs username and password
+$username = models\db\Database::escape_string($_POST['username']);
+$password = md5($_POST['password']);
+
+// Prepare query and execute it.
+$users = models\db\User::selectAllByUsernameAndPassword($username, $password);
+if ($users) {
+    // Login Successful
+    $user = mysqli_fetch_array($users);
+
+    session_regenerate_id();
+    $_SESSION['username']    = $user['username'];
+    $_SESSION['displayname'] = $user['displayname'];
+    $_SESSION['loggedin']    = 1;
+
+    setcookie('username', $user['username'],time() + helpers\Dates::SECONDS_DAY * 7);
+
+    session_write_close();
+    header('location: portfolio.phtml');
+    exit();
+}
+
+trigger_error('Invalid Username and/or password!', E_USER_ERROR);

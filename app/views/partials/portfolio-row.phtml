@@ -1,0 +1,64 @@
+<?php
+/** @var array $row */
+/** @var float $subtotal */
+
+?><tr><?php
+echo models\Ui::renderTendencyValueTd($row['number_of_share'], $row['price'], $row['price_latest']);
+
+$priceChange   = $row['price_latest'] - $row['price'];
+/* ex: 25 is what percentage of 80?
+   Step 1: Solve the equation: 80 / 25 = x
+   Step 2: Multiply x by 100% to get the answer
+*/
+$changePercent = 100.0 * ($priceChange / $row['price']);
+$prefix        = $priceChange > 0 ? '+' : ''; ?>
+    <td>
+        <?php echo $prefix . number_format($changePercent, 2) . '%<br/>' ?>
+        <?php echo $prefix . $priceChange ?>
+    </td>
+    <td>
+        <div style="float:left">
+            <strong class="symbolName"><?php echo $row['symbol'] ?></strong>
+        </div>
+        <div title="Show Quote" class="showQuoteLink icon three-quarter icon-line-chart u-floatRight" style="cursor:pointer; margin-top:-2px;"></div>
+    </td>
+    <td class="item-stock" colspan="2">
+        <?php echo $row['security_name'] ?>
+    </td>
+    <td class="item-stock align-left">
+        <table class="innerTupel" style="float:left">
+            <tr>
+                <td style="width:30px">
+                    <?php echo  $row['number_of_share'] ?>
+                </td>
+                <td>
+                    <a href="buy.php?symbol=<?php $row['symbol'] ?>"><span class="green">BUY</span></a>
+                    <?php
+                        if ($row['number_of_share'] > 0) {
+                            echo '<a href="sell.php?symbol=' . $row['symbol'] . '"><span class="red">SELL</span></a>';
+                        } else { ?>
+                            <a href="ajax-symbol-unwatch.php?symbol=<?php echo $row['id_symbol'] ?>">
+                                <span class="red">UNWATCH</span>
+                            </a>
+                    <?php  } ?>
+                </td>
+            </tr>
+        </table>
+    </td>
+    <td class="small"><?php
+        if ($row['number_of_share'] > 0) {
+            echo str_replace(' ', '&nbsp;', date('Y/m/d H:i', $row['time'])) . '<br/>' . helpers\Dates::formatDateDiff($row['time'], null, true);
+        } ?>
+    </td>
+    <td class="item-stock align-right align-top">
+        <?php echo number_format($row['price_latest'], 2) ?>
+    </td>
+    <td class="item-stock align-right align-top">
+        <?php echo
+              ($row['number_of_share'] > 1 ? number_format($row['price'], 2) . '<br/>' : '')
+            . round((float)$row['number_of_share'] * $row['price'], 2) ?>
+    </td>
+    <td class="item-stock align-right align-top">
+        <?php echo($row['number_of_share'] > 1 ? '<br/>' : '') . number_format($subtotal, 2) ?>
+    </td>
+</tr>

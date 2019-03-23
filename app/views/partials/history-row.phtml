@@ -1,0 +1,25 @@
+<tr>
+    <td class="item-stock">
+        <?php echo gmdate('d-m-Y H:i', $row['time']) ?>
+        -
+        <?php echo helpers\Dates::formatDateDiff($row['time']) ?>
+        ago
+    </td>
+    <td>
+        <strong class="symbolName">
+            <?php echo $row['symbol'] ?>
+        </strong>
+    </td>
+    <td>
+        <?php echo $row['security_name'] ?>
+    </td>
+    <td class="item-stock">
+        <?php echo $row['price'] ?>
+    </td>
+    <td class="item-stock">
+        <?php echo $row['transaction'] ?>
+    </td>
+    <td class="item-stock">
+        <?php echo $row['number_of_share'] ?>
+    </td>
+</tr>

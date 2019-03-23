@@ -1,0 +1,28 @@
+<div class="u-floatLeft" style="margin-left: 2.5em; margin-top: 10px; width:auto; text-transform:uppercase">
+    <?php echo I::Symbols ?>:
+</div>
+<?php if (isset($allSymbols) && $allSymbols === true) {?>
+    <div class="u-floatLeft">
+        <input class="u-clearBoth" onchange="Trader.Symbol.toggleSearchInPortfolio()" style="width:auto; margin-left:1.5em!important; margin-top:10px" type="checkbox" checked="checked" id="all"/>
+        <label style="margin-top:10px" for="all">
+            <?php echo I::All ?>
+        </label>
+    </div>
+<?php }
+
+?>
+<div class="u-floatLeft">
+    <input class="u-clearBoth" onchange="Trader.Symbol.toggleSearchInPortfolio()" style="width:auto; margin-left:1.5em!important; margin-top:10px" type="checkbox" checked="checked" id="portfolio"/>
+    <label style="margin-top:10px" for="portfolio">
+        <div class="icon icon-suitcase three-quarter"></div>
+        <?php echo I::Portfolio ?>
+    </label>
+</div>
+
+<div class="u-floatLeft">
+    <input class="u-clearBoth" onchange="Trader.Symbol.toggleSearchInWatchlist()" style="width:auto; margin-left:1.5em!important; margin-top:10px" type="checkbox" checked="checked" id="watchlist"/>
+    <label style="margin-top:10px" for="watchlist">
+        <div class="icon icon-eye three-quarter"></div>
+        <?php echo I::Watchlist ?> (<?php ?>)
+    </label>
+</div>

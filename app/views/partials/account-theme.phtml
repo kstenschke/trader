@@ -1,0 +1,9 @@
+<?php $themes = models\Config::getConfig('themes'); ?>
+<label for="theme"><?php echo I::Theme ?></label>
+<select size="<?php echo count($themes) ?>" id="theme" onchange="document.location.href='account.php?action=save-theme&theme=' + this.value">
+    <?php foreach ($themes as $theme) { ?>
+        <option value="<?php echo $theme['name'] ?>"<?php if ($activeTheme === $theme['name']) {?> selected="selected"<?php } ?>>
+            <?php echo i('Theme' . ucfirst($theme['name'])) ?: ucfirst($theme['name']) ?>
+        </option>
+    <?php } ?>
+</select>

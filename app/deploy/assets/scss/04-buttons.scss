@@ -1,0 +1,63 @@
+button,
+input,
+select,
+.pseudoSelect {
+  font-size: 13px;
+}
+
+select.caretDown {
+  background: url('images/caret-down.png') no-repeat right 6px;
+}
+
+button,
+input {
+  border-radius: 5px;
+  margin: 10px 4px;
+  padding: 2px;
+
+  &.btn {
+    border-width: 0;
+    cursor: pointer;
+    float: right;
+    padding: 6px 12px;
+  }
+
+  th.&.btn {
+    margin: 2px;
+  }
+}
+
+.btn,
+input.btn,
+button.btn {
+  background-color: #49718f;
+  border: none;
+  color: ghostwhite;
+  cursor: pointer;
+}
+
+input[type="button"] {
+  outline: none;
+}
+
+.btn {
+  &.green {
+    background-color: #009400;
+    color: ivory;
+  }
+  &.red {
+    background-color: #ff0000;
+    color: ivory;
+  }
+  &.grey {
+    background-color: #808080;
+    color: ivory;
+  }
+}
+
+.accountAction {
+  .btn {
+    border: 0;
+    padding: 6px 12px;
+  }
+}

@@ -1,0 +1,25 @@
+<?php
+/** @var string $symbolToSell */
+/** @var array  $amountOwnedPerSymbol */
+$amountAllInitial = 1;
+$isOdd            = true;
+$alreadyListed    = [];
+while ($row = mysqli_fetch_array($result)) {
+    $amountOwned = $amountOwnedPerSymbol[$row['id_symbol']]['amount'];
+    if ($amountOwned > 0 && !in_array($row['symbol'], $alreadyListed, true)) { ?>
+        <option
+            <?php if ($isOdd) { ?> class="odd"<?php } ?>
+            value="<?php echo $row[ 'symbol' ] ?>"
+            <?php if ($row[ 'symbol' ] === $symbolToSell) {
+                $amountAllInitial = $amountOwned; ?> selected="selected"<?php
+            } ?>
+            data-amount="<?php echo $amountOwned ?>"
+        >
+            <?php echo $amountOwned ?> - &nbsp;
+            <?php echo $row['symbol'] ?> &nbsp; - <?php echo $row[ 'security_name' ] ?>
+        </option>
+        <?php
+        $isOdd = !$isOdd;
+        $alreadyListed[] = $row['symbol'];
+    }
+}

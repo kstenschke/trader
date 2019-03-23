@@ -1,0 +1,45 @@
+<?php
+
+/** @noinspection UntrustedInclusionInspection */
+/** @noinspection PhpIncludeInspection */
+require_once 'app/bootstrap.php';
+session_destroy(); ?>
+<!DOCTYPE html>
+<html>
+    <?php
+        $title = 'Login';
+        include PATH_APP . '/views/partials/head.phtml';
+
+        $meta = models\Config::getConfig('meta');
+    ?>
+    <body id="login">
+    <div id="loginBox">
+        <form action="login2.phtml" method="post">
+            <?php require PATH_APP . '/views/partials/clock.phtml'; ?>
+            <h1><?php echo $meta['name'] ?> Login</h1>
+            <fieldset class="accountInfo">
+                <label for="username" class="first">Username</label>
+                <input class="glowing-border" align="center" type="text" id="username" name="username" required<?php
+                    if (!empty($_COOKIE['username'])) { ?> value="<?php echo $_COOKIE['username'] ?>"<?php } ?>/>
+                <label for="password">Password</label>
+                <input class="glowing-border" align="center" id="password" type="password" name="password" required/>
+            </fieldset>
+            <fieldset class="accountAction">
+                <input class="btn glowing-border" type="submit" name="submit" value="Login"/>
+            </fieldset>
+            <br/><br/>
+            <span class="u-floatLeft" style="font-size:9px">
+                <?php echo $meta['name'] ?>
+                v <?php echo $meta['version'] ?>
+            </span>
+            <?php if (models\Config::getConfig('acl')['allowAccountRegistrationToNonAdmins'] === '1') {?>
+                <span class="u-floatRight">Don't have an account? <a href="register.phtml">Register</a></span>
+            <?php } ?>
+        </form>
+    </div>
+    <?php echo models\JavaScript::getScriptTag(); ?>
+    <script type="text/javascript">
+        document.getElementById('username').focus();
+    </script>
+    </body>
+</html>

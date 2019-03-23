@@ -1,0 +1,125 @@
+form {
+  border: 1px solid #cecfd5;
+  overflow: hidden;
+
+  span {
+    border: 0;
+    color: #395870;
+    overflow: hidden;
+    text-align: center;
+  }
+
+  &.mainForm {
+    border: 1px solid #cecfd5;
+    margin-bottom: 30px;
+    width: 100%;
+  }
+}
+
+fieldset {
+  border: 0;
+  margin: 0;
+  padding: 2px;
+
+  &.readOnly {
+    opacity: 0.6;
+  }
+}
+
+.glowing-border:focus {
+  outline: none;
+  border-color: #5e86a4;
+
+  -webkit-box-shadow: 0 0 4px #5e86a4;
+  -moz-box-shadow: 0 0 4px #5e86a4;
+  box-shadow: 0 0 4px #5e86a4;
+}
+
+#login form label {
+  margin-top: 20px;
+
+  &.first {
+    margin-top: 0;
+  }
+}
+
+#loginBox form {
+  background: #ffffff;
+  left: 30%;
+  padding: 20px;
+  position: fixed;
+  right: 30%;
+  top: 40px;
+}
+
+option.odd,
+.pseudoOption.odd {
+  background-color: #fffefe;
+}
+
+.pseudoOption {
+  clear: both;
+  width: 98%;
+
+  .code {
+    float: left;
+    width: 50px;
+  }
+  .example {
+    float: left;
+    width: 120px;
+  }
+  .title {
+    float: left;
+    width: 200px;
+  }
+}
+
+select,
+.pseudoSelect {
+  background: #f8f8f8;
+  color: #395870;
+  cursor: pointer;
+  display: inline;
+  outline: none;
+  width: 100%;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+
+  &#searchResults option {
+    width: 75%;
+  }
+}
+
+select,
+div.formSection {
+  border: 0.5px solid #cccccc;
+  border-radius: 4px;
+  margin-bottom: 2em;
+  padding: 0.75em;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+}
+
+.pseudoSelect {
+  display: inline-block;
+  width: 98%;
+}
+
+.accountInfo input {
+  float: left;
+  background: #ffffff;
+
+  /* Remove initial shadow effect from border */
+  border: 1px solid #949494;
+
+  color: #636466;
+  margin-left: -.05em;
+  margin-top: 5px;
+  padding: 5px;
+  width: 99%;
+}
+
+.half-wid input {
+  width: 90%;
+}

@@ -1,0 +1,59 @@
+{
+  "meta": {
+    "name":    "Trader",
+    "version": "0.1 beta"
+  },
+  "bootstrap": {
+    "check-DB-exists":   "0",
+    "force-rebuild-css": "0",
+    "force-rebuild-js":  "0",
+    "minify-js":         "0"
+  },
+  "database": {
+    "host":     "localhost",
+    "user":     "root",
+    "database": "trader",
+    "password": "root"
+  },
+  "acl": {
+    "adminUsernames": ["admin"],
+    "allowAccountRegistrationToNonAdmins": "1"
+  },
+  "defaultLanguage": "de",
+  "pages": [
+    {"title": "portfolio", "icon": "icon-suitcase"},
+    {"title": "buy",       "icon": ""},
+    {"title": "sell",      "icon": ""},
+    {"title": "history",   "icon": ""}
+  ],
+  "time": {
+    "showClock": "0"
+  },
+  "tradeRates": {
+      "courtageInPercent":      "5",
+      "courtagePerTrade":       "3",
+      "dayTradingTaxInPercent": "35"
+  },
+  "scraper": {
+      "name": "IEX Cloud",
+      "model": "ScraperIexCloud",
+      "token": "pk_YOURTOKEN",
+      "routes": {
+        "tops":  "https://cloud.iexapis.com/beta/tops?token=TOKEN&symbols=SYMBOL",
+        "open-high-low-change":  "https://cloud.iexapis.com/beta/stock/SYMBOL/ohlc?token=TOKEN"
+      }
+  },
+  "currencies": [
+    "AUD", "CAD", "CHF", "CNY", "EUR", "GBP", "JPY", "NZD", "RUB", "USD", "ZAR"
+  ],
+  "themes": [
+    {"name": "default", "path": "PATH_ASSETS/default.css"},
+    {"name": "dark",    "path": "PATH_ASSETS/dark.css"}
+  ],
+  "vendor-libraries": [
+    "deploy/assets/js/lib/jquery-3.1.1.min.js",
+    "deploy/assets/js/lib/jquery.floatThead.min.js",
+    "deploy/assets/js/lib/jsgrid.min.js",
+    "deploy/assets/js/lib/sorttable.js"
+  ]
+}

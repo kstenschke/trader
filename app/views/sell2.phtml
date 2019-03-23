@@ -1,0 +1,61 @@
+<?php
+
+/** @noinspection UntrustedInclusionInspection */
+/** @noinspection PhpIncludeInspection */
+require_once 'app/bootstrap.php';
+models\Auth::restrictAccess();
+
+if (!isset($_GET['symbol']) || empty($_GET['symbol'])) {
+    trigger_error('You must provide a symbol.', E_USER_ERROR);
+}
+if (!isset($_GET['qty']) || empty($_GET['qty'])) {
+    trigger_error('No quantity provided.', E_USER_ERROR);
+}
+if (!preg_match("/^[a-zA-Z0-1\._-]+$/", $_GET['symbol'])) {
+    trigger_error('That does not appear to be a valid symbol.', E_USER_ERROR);
+}
+$qty      = (int)$_GET['qty'];
+if ($qty <= 0) {
+    trigger_error('Number of stock must be more than zero.', E_USER_ERROR);
+}
+
+$idUser   = models\db\User::getCurrentUserId();
+$symbol   = models\db\Database::escape_string($_GET['symbol']);
+$idSymbol = models\db\Symbol::getIdSymbolByName($symbol);
+
+// Check if the specified quantity by the user is more than what he owns!
+// Also added a variable that knows if QTY is equal to NUMBER OF SHARES
+$result  = models\db\Portfolio::selectAmountOwnedBySymbol($idSymbol, $idUser);
+$soldAll = false;
+if ($result && models\db\Database::affected_rows() === 1) {
+    $row = mysqli_fetch_array($result);
+    if ($qty > $row['number_of_share']) {
+        trigger_error("You don't have that many shares to sell. You can sell at most {$row['number_of_share']} shares of this stock.", E_USER_ERROR);
+    } elseif ($qty === (int)$row['number_of_share']) {
+        $soldAll = true;
+    }
+}
+
+// Sell.
+$stock        = models\Scraper::getCurrentData($symbol);
+$currentPrice = $stock['price'];
+$cashEarned   = (float) $currentPrice * $qty;
+
+$result = models\db\User::addCash($cashEarned, $idUser);
+if (!$result && models\db\Database::affected_rows() !== 1) {
+    trigger_error("Cash wasn't updated in your money.", E_USER_ERROR);
+}
+
+// Remove that stock from the table.
+// If number_of_share == quantity, do a DELETE query
+// Else do an update query..
+$result = models\db\Portfolio::reduceShares($soldAll, $idSymbol, $qty, $idUser);
+models\db\Portfolio::archiveTransaction('SELL', $idSymbol, $qty, $currentPrice, $idUser);
+
+// Since we are at it let's update the stock's current price in price table
+models\db\Database::query(
+    "INSERT INTO price (id_symbol, price) VALUES ('$idSymbol','$currentPrice')
+     ON DUPLICATE KEY UPDATE price = VALUES(price)"
+);
+
+helpers\Http::redirect('portfolio.phtml');

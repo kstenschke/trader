@@ -1,0 +1,17 @@
+label {
+  cursor: pointer;
+  text-transform: uppercase;
+
+  .accountAction & {
+    color: #7c7c80;
+    margin: 10px 0 0 20px;
+  }
+
+  .accountInfo & {
+    color: #395870;
+    display: block;
+    float: left;
+    font-weight: 400;
+    margin-bottom: 6px;
+  }
+}

@@ -1,0 +1,12 @@
+<div id="clockWrapper"<?php if (models\Config::getConfig('time')['showClock'] === '0') {?> style="display:none"<?php } ?>>
+    <div class="clock">
+        <div id="Date"></div>
+        <ul>
+            <li id="hours"><?php echo date('H') ?></li>
+            <li>:</li>
+            <li id="min"><?php echo date('i') ?></li>
+            <li>:</li>
+            <li id="sec"><?php echo date('s') ?></li>
+        </ul>
+    </div>
+</div>

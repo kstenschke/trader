@@ -1,0 +1,30 @@
+div#clockWrapper {
+  float: right;
+  width: 234px;
+  position: relative;
+  left: -81px;
+  top: 4px;
+
+  .clock {
+    #Date {
+      float: left;
+      padding-right: 13px;
+    }
+
+    ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+
+      & li {
+        display: inline;
+      }
+    }
+  }
+}
+
+#login div#clockWrapper {
+  left: 0;
+  top: 0;
+  width: 276px;
+}

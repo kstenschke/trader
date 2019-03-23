@@ -1,0 +1,36 @@
+<?php
+
+/**
+ * @var array $subNav
+ * @see set in controllerView rendering the page
+ */
+if (isset($subNav) && count($subNav) > 0) { ?>
+    <ul id="subnav" class="u-floatRight u-textAlignLeft" style="margin:0">
+        <?php
+        $index         = 0;
+        $indexLastPage = count($subNav) - 1;
+        foreach($subNav as $subPage => $subPageTitle) {
+            echo '<li style="float:right"><a id="' . $subPage . '" href="' . $subPage . '.php">'
+                . (isset($subNavIcons[$index]) && !empty($subNavIcons[$index])
+                    ? '<div class="icon icon-' . $subNavIcons[$index] .' three-quarter"></div>'
+                    : ''
+                )
+                . $subPageTitle . '</a></li>';
+
+            $index++;
+        }
+        ?>
+    </ul>
+<?php }
+$pageName    = models\Area::getActivePageName();
+$isPortfolio = $pageName === 'portfolio';
+if ($isPortfolio || $pageName === 'buy') {
+    $divAttributes = $isPortfolio
+        ? ' class="u-posRel" style="left:25px; top:-23px"'
+        : ' class="u-posRel" style="left:156px; top:-10px"';
+    ?>
+<div <?php echo $divAttributes ?>><?php
+    $allSymbols = !$isPortfolio;
+    include PATH_APP . '/views/partials/symbol-filter.phtml';
+} ?>
+</div>

@@ -1,0 +1,107 @@
+<?php
+
+/** @noinspection UntrustedInclusionInspection */
+/** @noinspection PhpIncludeInspection */
+require_once 'app/bootstrap.php';
+models\Auth::restrictAccess();
+
+$portfolio = models\db\Portfolio::getAmountOwnedPerSymbol();
+$result    = models\db\Symbol::selectRowsForQuote();
+$shownSymbolIDs = []; ?>
+<!DOCTYPE html>
+<html>
+    <?php
+        $title = 'Quotes';
+        include PATH_APP . '/views/partials/head.phtml';
+    ?>
+    <body class="quotes">
+    <?php
+        $subNavIcons = ['refresh'];
+        $subNav      = ['ajax-refresh-symbols' => 'Update rates'];
+        require_once PATH_APP . '/views/partials/navbar.phtml';
+        echo models\JavaScript::getScriptTag();
+    ?>
+        <div class="pageWrap">
+            <div class="u-center">
+                <div id="dataTableWrap">
+                    <table class="sortable" id="dataTable">
+                        <thead>
+                            <tr>
+                                <th scope="col"></th>
+                                <th scope="col"><?php echo I::Diff ?></th>
+                                <th scope="col"><?php echo I::Symbol ?></th>
+                                <th scope="col"><?php echo I::Name ?></th>
+                                <th scope="col" class="align-right"><?php echo I::Price ?></th>
+                                <th scope="col" class="align-right"><?php echo I::Paid ?></th>
+                                <th scope="col"><?php echo I::Buy ?>/<?php echo I::Sell ?></th>
+                                <th scope="col"><?php echo I::Refresh ?></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <?php
+                        while ($row = mysqli_fetch_array($result)) {
+                            $amountOwned = isset($portfolio[$row['id_symbol']]) ? $portfolio[$row['id_symbol']]['amount'] : 0;
+                            echo '<tr>';
+                            //$tendency = mt_rand(0, 2);
+                            echo models\Ui::renderTendencyValueTd($amountOwned, $row['price_paid'], $row['price_latest']);
+
+                            $priceChange   = $row['price_latest'] - $row['price_paid'];
+                            /* ex: 25 is what percentage of 80?
+                                   Step 1: Solve the equation: 80 / 25 = x
+                                   Step 2: Multiply x by 100% to get the answer
+                                */
+                            $changePercent = 100.0 * ($priceChange / $row['price_paid']);
+                            $prefix        = $priceChange > 0 ? '+' : '';
+
+                            echo '<td>'
+                                . $prefix . number_format($changePercent, 2) . '%<br/>'
+                                . $prefix . $priceChange
+                                . '</td>';
+
+                            echo "<td><div style=\"float:left\"><strong class=\"symbolName\">{$row['symbol']}</strong></div>";
+                            echo '<img title="<?php echo I::GetQuote ?>" class="icon u-floatRight" style="cursor:pointer; margin-top:-2px" src="var/assets/images/line-chart.png"/>';
+                            echo '</td>';
+
+                            echo "<td>{$row['security_name']}</td>";
+                            echo '<td class="item-stock align-right">' . $row['price_latest'] . '</td>';
+                            echo '<td class="item-stock align-right">';
+
+                            $idSymbol   = $row['id_symbol'];
+                            $symbol     = $row['symbol'];
+
+                            $shownSymbolIDs [] = $idSymbol;
+
+                            if ($amountOwned === 0) {
+                                $thePrice = 'N/A';
+                                $canSell  = false;
+                            } else {
+                                $thePrice = $row['price_paid'];
+                                $canSell  = true;
+                            }
+
+                            echo "$thePrice</td>"
+                               . '<td class="item-stock">'
+                                    . '<table class="innerTupel"><tr><td style="width:30px">'
+                               . ($amountOwned > 0 ? $amountOwned : '') . '</td>'
+                               . '<td><a href="buy.phtml?symbol={$symbol}\"><span class="green" style="text-transform:uppercase">' . I::Buy . '</span></a>';
+
+                            if ($canSell) {
+                                echo '<a href="sell.phtml?symbol=' . $symbol . '"><span style="text-transform:uppercase" class="red">' . I::Sell . '</span>';
+                            }
+
+                            echo '</td></table></td>'
+                             . '<td class="item-stock"><a href="ajax-symbol-get-price-latest.php?id=' . $idSymbol . '">' . I::FetchLatest . '</a></td>'
+                             . '</tr>';
+                        } ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+            Trader.DataTable.init('quotes');
+            Trader.Symbol.initQuoteRefreshShown('<?php echo implode(',', array_unique($shownSymbolIDs)); ?>');
+            Trader.Grid.initQuoteLinksObserverInGrid();
+        </script>
+    </body>
+</html>

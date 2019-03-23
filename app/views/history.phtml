@@ -1,0 +1,39 @@
+<?php
+
+/** @noinspection UntrustedInclusionInspection */
+/** @noinspection PhpIncludeInspection */
+require_once 'app/bootstrap.php';
+models\Auth::restrictAccess();
+
+$res = models\db\Portfolio::selectAllFromArchive();
+if (!$res) {
+    trigger_error("You don't have any transactions yet.", E_USER_ERROR);
+} ?>
+<!DOCTYPE html>
+<html>
+    <?php
+        $title = "{$_SESSION['displayname']}'s Archive of Transactions";
+        include PATH_APP . '/views/partials/head.phtml';
+    ?>
+    <body class="history <?php echo models\CssTheme::getActiveThemeName(true) ?>">
+        <?php require_once PATH_APP . '/views/partials/navbar.phtml'; ?>
+        <div class="pageWrap">
+            <div class="u-center">
+                <table class="sortable" id="history">
+                    <?php require PATH_APP . '/views/partials/history-thead.phtml'; ?>
+                    <tbody>
+                        <?php while ($row = mysqli_fetch_array($res)) {
+                            require PATH_APP . '/views/partials/history-row.phtml'; ?>
+                        <?php } ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <?php echo models\JavaScript::getScriptTag(); ?>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $('#history').floatThead({position: 'fixed', top: 73});
+            });
+        </script>
+    </body>
+</html>

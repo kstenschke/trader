@@ -1,0 +1,12 @@
+<?php
+/** @var string $activeLanguage */
+/** @var bool   $reload */
+$languages = models\Lang::getLanguageKeys(); ?>
+<label for="language"><?php echo I::Language ?></label>
+<select size="<?php echo count($languages) ?>" id="language" onchange="document.location.href='account.php?action=save-language&language=' + this.value">
+    <?php foreach ($languages as $language) { ?>
+        <option value="<?php echo $language ?>"<?php if (!$reload && $activeLanguage === $language) {?> selected="selected"<?php } ?>>
+            <?php echo i('Language' . ucfirst($language)) ?>
+        </option>
+    <?php } ?>
+</select>

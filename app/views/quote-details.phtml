@@ -1,0 +1,85 @@
+<?php
+    /** @var array $symbol  */
+?>
+<section class="quoteHeading" style="height:272px">
+    <table class="no-border" style="width:80%; float: left;">
+        <tr class="odd">
+            <td class="label">Symbol:</td>
+            <td style="width:80%">
+                <strong><?php echo $symbol['symbol'] ?></strong> - <?php echo $symbol['name'] ?>
+                <div class="u-floatRight">
+                    Change:
+                    <?php
+                    echo $symbol['change'] < 0
+                        ? '<span class="red">' . $symbol['change'] . '%</span>'
+                        : '<span class="green">' . $symbol['change'] . '%</span>';
+                    ?>
+                </div>
+            </td>
+
+            <td class="label">Price&nbsp;in&nbsp;USD:</td>
+            <td><?php echo $symbol['price'] ?></td>
+        </tr>
+        <tr>
+            <td class="label"></td>
+            <td></td>
+
+            <td class="label">Today's&nbsp;Opening:</td>
+            <td><?php echo $symbol['open'] ?></td>
+        </tr>
+        <tr class="odd">
+
+            <td class="label"></td>
+            <td></td>
+
+            <td class="label">Today's&nbsp;High:</td>
+            <td><?php echo $symbol['high'] ?></td>
+        </tr>
+        <tr>
+            <td class="label"></td>
+            <td></td>
+
+            <td class="label">Today's&nbsp;Low:</td>
+            <td><?php echo $symbol['low'] ?></td>
+        </tr>
+        <tr>
+            <td colspan="8">
+                <label>Last 30 days:</label>
+                <br/>
+                <table>
+                    <tr>
+                        <?php for($d = 1; $d <= 30; $d++) { ?>
+                            <td class="label" style="border-left:1px solid #fcfcfc">-<?php echo $d ?></td>
+                        <?php } ?>
+                    </tr>
+                    <tr>
+                        <?php for($d = 1; $d <= 30; $d++) { ?>
+                            <td class="label" style="border-left:1px solid #fcfcfc">...</td>
+                        <?php } ?>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="8">
+                <label>Week-wise Change-Review:</label>
+                <br/>
+                <table>
+                    <tr>
+                        <?php for($w = 2; $w <= 52; $w+=2) { ?>
+                            <td class="label" style="border-left:1px solid #fcfcfc">-<?php echo $w ?></td>
+                        <?php } ?>
+                    </tr>
+                    <tr>
+                        <?php for($w = 2; $w <= 52; $w+=2) { ?>
+                            <td class="label" style="border-left:1px solid #fcfcfc">...</td>
+                        <?php } ?>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <div style="background-color:transparent; margin:-40px -0 40px 0">
+        <input class="btn grey closePopup" onclick="$('#popup').remove()" name="" value="" type="button">
+    </div>
+</section>

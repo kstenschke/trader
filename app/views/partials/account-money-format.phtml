@@ -1,0 +1,12 @@
+<div class="pseudoSelect" style="clear:both; width:100%">
+    <label for="theme"><?php echo I::MoneyFormat ?></label>
+    <br/><br/><br/>
+    <?php $shownCurrencies = models\Monetary::getShownCurrencies();
+    foreach($shownCurrencies as $currency) { ?>
+            <div class="pseudoOption">
+                <div class="floatLeft code"><?php echo $currency['code'] ?></div>
+                <div class="floatLeft example"><?php echo models\Monetary::formatMoneyByCurrencyCode($currency) ?></div>
+                <div class="floatLeft title"><?php echo $currency['title'] ?></div>
+            </div>
+    <?php } ?>
+</div>

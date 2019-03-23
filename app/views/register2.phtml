@@ -1,0 +1,38 @@
+<?php
+
+/** @noinspection UntrustedInclusionInspection */
+/** @noinspection PhpIncludeInspection */
+require_once 'app/bootstrap.php';
+
+// Error handling and checking
+if (strlen(trim($_POST['username'])) < 4) {
+    trigger_error('Please provide a username longer than 3 characters.', E_USER_ERROR);
+}
+if (strlen(trim($_POST['displayname'])) < 4) {
+    trigger_error('Please provide a displayname longer than 3 characters.', E_USER_ERROR);
+}
+if ($_POST['confirmpassword'] !== $_POST['password']) {
+    trigger_error('Passwords do not match', E_USER_ERROR);
+}
+if (strlen($_POST['password']) < 4) {
+    trigger_error('Please provide a password longer than 3 characters.', E_USER_ERROR);
+}
+
+// Escapes username and display name by adding backslashes. Prevents SQL injection.
+// Password is hashed using MD5
+$username    = models\db\Database::escape_string($_POST['username']);
+$password    = md5($_POST['password']);
+$displayName = models\db\Database::escape_string($_POST['displayname']);
+
+// Check if the username exists or not and accordingly progress
+/*$nameCheck = models\db\User::selectRowsByUser();
+if ($nameCheck === false) {
+    trigger_error('Something went wrong. Query not executed!', E_USER_ERROR);
+}*/
+if (models\db\Database::affected_rows() === 1) {
+    trigger_error('This username is already taken. Choose another one.', E_USER_ERROR);
+}
+
+if (models\db\User::createAccount($displayName, $username, $password)) {
+    helpers\Http::redirect('index.php');
+}

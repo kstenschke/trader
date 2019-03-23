@@ -1,0 +1,68 @@
+<?php
+
+/** @noinspection UntrustedInclusionInspection */
+/** @noinspection PhpIncludeInspection */
+require_once 'app/bootstrap.php';
+models\Auth::restrictAccess();
+
+if (isset($_GET['cheat'])) {
+    models\db\User::cheatOnCash();
+}
+
+$reload = false;
+if (isset($_GET['action'])) {
+    switch ($_GET['action']) {
+        case 'save-theme':
+            models\db\Preference::savePreference(models\db\Preference::PREF_IDENTIFIER_THEME, $_GET['theme']);
+            break;
+        case 'save-language':
+            models\db\Preference::savePreference(models\db\Preference::PREF_IDENTIFIER_LANGUAGE, $_GET['language']);
+            // Reload page to bootstrap w/ changed language
+            $reload = true;
+            break;
+    }
+}
+?>
+<!DOCTYPE html>
+<html>
+    <?php
+        $title = "{$_SESSION['displayname']} - Account Settings";
+        include PATH_APP . '/views/partials/head.phtml';
+
+        $activeTheme    = models\CssTheme::getActiveThemeName();
+        $activeLanguage = models\Lang::getActiveLanguage();
+        $moneyFormat    = models\Monetary::getActiveMoneyFormatName();
+    ?>
+    <body class="account <?php echo models\CssTheme::getActiveThemeName(true) ?>">
+        <?php echo models\JavaScript::getScriptTag(); ?>
+        <?php require_once PATH_APP . '/views/partials/navbar.phtml'; ?>
+        <div class="pageWrap">
+            <section class="accountSettings">
+                <form action="changepassword.phtml" method="post">
+                    <div style="width:500px; margin:10px 0 0 10px; float:left" class="formSection">
+                        <?php require_once PATH_APP . '/views/partials/account-password.phtml' ?>
+                    </div>
+                    <div style="width:544px; float:right; clear:right">
+                        <fieldset class="accountInfo">
+                            <div class="formSection">
+                                <?php require_once PATH_APP . '/views/partials/account-language.phtml' ?>
+                            </div>
+                            <div class="formSection">
+                                <?php require_once PATH_APP . '/views/partials/account-theme.phtml' ?>
+                            </div>
+                            <div class="formSection">
+                                <?php require_once PATH_APP . '/views/partials/account-money-format.phtml' ?>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div style="width:500px; margin:30px 0 30px 10px; float:left; clear:left;" class="formSection">
+                        <?php require_once PATH_APP . '/views/partials/account-trade-rates.phtml' ?>
+                    </div>
+                </form>
+            </section>
+        </div>
+        <?php if ($reload) { ?>
+            <script type="text/javascript">document.location.href = document.location.href.replace('save-language', 'void')</script>
+        <?php } ?>
+    </body>
+</html>

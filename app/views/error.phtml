@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+    <?php
+        /** @var string $message */
+        /** @var int    $code */
+    ?>
+    <body style="background-color:#232525; color:#fcfcfc; padding:20px">
+        <style type="text/css">
+            .outer {
+                display: table;
+                position: absolute;
+                height: 100%;
+                width: 100%;
+            }
+            .middle {
+                display: table-cell;
+                vertical-align: middle;
+            }
+            .inner {
+                margin-left: auto;
+                margin-right: auto;
+            }
+            textarea {
+                background: transparent;
+                color: #ffb4b4;
+                width: 1360px;
+                height: 600px;
+                margin: 20px 0 0 0;
+            }
+        </style>
+        <div class="outer">
+            <div class="middle">
+                <div class="inner" style="margin:0 40% 0 40%">
+                    <img src="var/assets/images/warning.png" style="width:300px"/>
+                </div>
+            </div>
+        </div>
+        <div style="z-index:1; position:absolute; left:20px; top:20px; max-width:100%; background: #000">
+            <?php echo \is_array($message) ? \print_r($message, true) : $message ?><br/>
+            <pre><?php \print_r(\debug_backtrace()) ?></pre>
+        </div>
+
+        <footer style="position:absolute; bottom:60px">
+            <a style="color:#fcfcfc" href="javascript:history.go(-1);">Go Back</a>
+        </footer>
+    </body>
+</html>
