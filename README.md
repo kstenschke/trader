@@ -53,7 +53,7 @@ See: UiScript::mergeAndMinifyJs() in app/models/UiScript.php
 
 The following variables are replaced in JavaScript:
 
-* ###I::<i18n-message>###   - Replaced by translation of <i18n-message> in activated language
+* ###I::<i18n-message>###   - Replaced by translation of <i18n-message> of active language
 
 
 # Author and License
